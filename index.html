@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ruta Turística Inteligente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fuente + Iconos -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#7c5dfa"/>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <h1>Ruta Turística Inteligente</h1>
+      <p>Elige tus gustos y te armamos una ruta optimizada por tiempo, presupuesto y distancia.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2 class="card__title"><i class="fa-solid fa-sliders"></i> Preferencias</h2>
+      <form id="formulario" class="form">
+        <div class="form__group">
+          <label class="form__label">Intereses</label>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="categoria" value="naturaleza" checked> Naturaleza</label>
+            <label class="chip"><input type="checkbox" name="categoria" value="cultura" checked> Cultura</label>
+            <label class="chip"><input type="checkbox" name="categoria" value="gastronomía"> Gastronomía</label>
+            <label class="chip"><input type="checkbox" name="categoria" value="aventura"> Aventura</label>
+            <label class="chip"><input type="checkbox" name="categoria" value="playa"> Playa</label>
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="form__group">
+            <label class="form__label">Tiempo disponible (horas)</label>
+            <input type="number" id="tiempo" min="1" value="6" class="input" />
+          </div>
+          <div class="form__group">
+            <label class="form__label">Presupuesto (MXN)</label>
+            <input type="number" id="presupuesto" min="0" value="1200" class="input" />
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="form__group">
+            <label class="form__label">Ubicación</label>
+            <div class="loc">
+              <input id="ubicacionTexto" class="input" type="text" placeholder="Usaremos tu ubicación si la autorizas" disabled />
+              <button type="button" id="btnUbicacion" class="btn btn--ghost"><i class="fa-solid fa-location-crosshairs"></i> Usar mi ubicación</button>
+            </div>
+            <small class="muted">Si no autorizas, se usa CDMX como referencia.</small>
+          </div>
+        </div>
+
+        <div class="form__actions">
+          <button type="submit" class="btn btn--primary"><i class="fa-solid fa-route"></i> Generar ruta</button>
+          <button type="button" id="btnLimpiar" class="btn btn--light"><i class="fa-solid fa-rotate-left"></i> Limpiar</button>
+          <button type="button" id="btnCSV" class="btn btn--light"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+          <button type="button" id="btnPDF" class="btn btn--light"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="layout">
+      <div class="col">
+        <div class="card">
+          <h2 class="card__title"><i class="fa-solid fa-list-check"></i> Ruta sugerida</h2>
+          <div id="resumen" class="summary"></div>
+          <div id="resultados" class="grid"></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h2 class="card__title"><i class="fa-solid fa-map-location-dot"></i> Mapa</h2>
+          <div id="mapa"></div>
+          <div class="legend">
+            <span><i class="fa-solid fa-person-walking"></i> A pie: 4.5 km/h</span>
+            <span><i class="fa-solid fa-car-side"></i> Auto: 50 km/h</span>
+            <span><i class="fa-solid fa-bus"></i> Bus: 30 km/h</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Hecho con ♥ para explorar México</footer>
+
+  <!-- Libs -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- App -->
+  <script src="app.js"></script>
+
+  <!-- PWA: registrar SW (solo funciona en http:// o https://, no en file:// ) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js');
+      });
+    }
+  </script>
+</body>
+</html>
